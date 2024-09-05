@@ -1,0 +1,17 @@
+C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\bin\Debug\net8.0-windows\TronGame.exe
+C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\bin\Debug\net8.0-windows\TronGame.deps.json
+C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\bin\Debug\net8.0-windows\TronGame.runtimeconfig.json
+C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\bin\Debug\net8.0-windows\TronGame.dll
+C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\bin\Debug\net8.0-windows\TronGame.pdb
+C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\obj\Debug\net8.0-windows\TronGame.csproj.GenerateResource.cache
+C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\obj\Debug\net8.0-windows\TronGame.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\obj\Debug\net8.0-windows\TronGame.AssemblyInfoInputs.cache
+C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\obj\Debug\net8.0-windows\TronGame.AssemblyInfo.cs
+C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\obj\Debug\net8.0-windows\TronGame.csproj.CoreCompileInputs.cache
+C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\obj\Debug\net8.0-windows\TronGame.dll
+C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\obj\Debug\net8.0-windows\refint\TronGame.dll
+C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\obj\Debug\net8.0-windows\TronGame.pdb
+C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\obj\Debug\net8.0-windows\TronGame.genruntimeconfig.cache
+C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\obj\Debug\net8.0-windows\ref\TronGame.dll
+C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\obj\Debug\net8.0-windows\TronGame.Properties.Resources.resources
+C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\obj\Debug\net8.0-windows\TronGame.TronGame.resources
