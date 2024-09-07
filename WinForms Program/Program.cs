@@ -1,5 +1,5 @@
 
-namespace TronGame
+namespace TronGame.WinForms_Program
 {
     internal static class Program
     {

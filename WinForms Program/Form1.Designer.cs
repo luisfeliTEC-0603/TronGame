@@ -1,4 +1,5 @@
-﻿namespace TronGame
+﻿
+namespace TronGame
 {
     partial class TronGame
     {
@@ -33,12 +34,19 @@
             GameField = new PictureBox();
             GameTimer = new System.Windows.Forms.Timer(components);
             GameGPX = new ImageList(components);
+            energyLabel = new Label();
+            energyBar = new ProgressBar();
+            speedInfo = new Label();
+            PowerUps = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)GameField).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)PowerUps).BeginInit();
             SuspendLayout();
             // 
             // GameField
             // 
-            GameField.BackColor = SystemColors.AppWorkspace;
+            GameField.BackColor = Color.Black;
+            GameField.BorderStyle = BorderStyle.FixedSingle;
+            GameField.Enabled = false;
             GameField.Location = new Point(0, 0);
             GameField.Name = "GameField";
             GameField.Size = new Size(1024, 608);
@@ -48,7 +56,7 @@
             // GameTimer
             // 
             GameTimer.Enabled = true;
-            GameTimer.Interval = 300;
+            GameTimer.Interval = 200;
             GameTimer.Tick += GameLoop;
             // 
             // GameGPX
@@ -69,18 +77,68 @@
             GameGPX.Images.SetKeyName(10, "Player.png");
             GameGPX.Images.SetKeyName(11, "Bot.png");
             // 
+            // energyLabel
+            // 
+            energyLabel.AutoSize = true;
+            energyLabel.Font = new Font("Pixel-Art", 16F, FontStyle.Italic);
+            energyLabel.ForeColor = SystemColors.Window;
+            energyLabel.Location = new Point(12, 628);
+            energyLabel.Name = "energyLabel";
+            energyLabel.Size = new Size(174, 19);
+            energyLabel.TabIndex = 1;
+            energyLabel.Text = "Energy Lvl.";
+            // 
+            // energyBar
+            // 
+            energyBar.ForeColor = SystemColors.HotTrack;
+            energyBar.Location = new Point(12, 659);
+            energyBar.Maximum = 500;
+            energyBar.Name = "energyBar";
+            energyBar.Size = new Size(266, 3);
+            energyBar.Step = -1;
+            energyBar.TabIndex = 2;
+            // 
+            // speedInfo
+            // 
+            speedInfo.AutoSize = true;
+            speedInfo.Font = new Font("Pixel-Art", 16F, FontStyle.Italic);
+            speedInfo.ForeColor = SystemColors.Window;
+            speedInfo.Location = new Point(800, 643);
+            speedInfo.Name = "speedInfo";
+            speedInfo.Size = new Size(185, 19);
+            speedInfo.TabIndex = 3;
+            speedInfo.Text = "Speed | MARC ";
+            // 
+            // PowerUps
+            // 
+            PowerUps.Location = new Point(297, 614);
+            PowerUps.Name = "PowerUps";
+            PowerUps.Size = new Size(488, 50);
+            PowerUps.TabIndex = 4;
+            PowerUps.TabStop = false;
+            // 
             // TronGame
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.ControlText;
             ClientSize = new Size(1024, 676);
+            Controls.Add(PowerUps);
+            Controls.Add(speedInfo);
+            Controls.Add(energyBar);
+            Controls.Add(energyLabel);
             Controls.Add(GameField);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
             Name = "TronGame";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "TRON GAME";
             Load += TronGameLoad;
             KeyDown += TronGameKeyDown;
             ((System.ComponentModel.ISupportInitialize)GameField).EndInit();
+            ((System.ComponentModel.ISupportInitialize)PowerUps).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -88,5 +146,9 @@
         private PictureBox GameField;
         private System.Windows.Forms.Timer GameTimer;
         private ImageList GameGPX;
+        private Label energyLabel;
+        public ProgressBar energyBar;
+        private Label speedInfo;
+        private PictureBox PowerUps;
     }
 }

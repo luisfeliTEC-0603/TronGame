@@ -37,17 +37,20 @@ namespace TronGame.Game_Logic
         }
         public Direction playerDirection { get; private set; }
 
-        Random randomValue;
-        private DateTime invincibilityTimer;
+        private Random randomValue = new Random();
 
-        public Player(int initialCoordX, int initialCoordY, int initialSize, int initialSpeed, Direction initialDirection) 
+        public DateTime invincibilityTimer {get; set;}
+        public DateTime useItemTimer { get; set; }
+        public DateTime hyperSpeedTimer { get; set; }
+
+        public Player(int initialCoordX, int initialCoordY, int initialSize, Direction initialDirection) 
         {
             playerAlive = true;
             playerInvincible = false;
 
-            playerEnergy = 100;
+            playerEnergy = 500; 
             playerSize = initialSize;
-            playerSpeed = initialSpeed;
+            playerSpeed = 1;
             playerDirection = initialDirection;
 
             playerPosition = new PlayerCoords(initialCoordX, initialCoordY);
@@ -118,12 +121,9 @@ namespace TronGame.Game_Logic
             int priority = 1;
             if (item == InGameObj.Energy) priority = 0;
 
-            itemsCollected.Push(item, priority);
-        }
+            if (itemsCollected.IsEmpty()) useItemTimer = DateTime.Now;
 
-        public InGameObj GetLastCollectedItem()
-        {
-            return !itemsCollected.IsEmpty() ? itemsCollected.Pop() : default;
+            itemsCollected.Push(item, priority);
         }
 
         public void HandleItem(InGameObj item)
@@ -131,11 +131,12 @@ namespace TronGame.Game_Logic
             switch (item)
             {
                 case InGameObj.Energy:
-                    if (playerEnergy < 100) playerEnergy += randomValue.Next(1, 100 - playerEnergy);
+                    if (playerEnergy < 100) playerEnergy += randomValue.Next(1, 500 - playerEnergy);
                     break;
 
                 case InGameObj.HyperVelocity:
-                    if (playerSize < 5) playerSpeed += randomValue.Next(1, 5 - playerSpeed);
+                    if (playerSpeed < 5) playerSpeed += randomValue.Next(1, 5 - playerSpeed);
+                    hyperSpeedTimer = DateTime.Now;
                     break;
 
                 case InGameObj.NewJet:
@@ -145,8 +146,17 @@ namespace TronGame.Game_Logic
 
                 case InGameObj.Shield:
                     playerInvincible = true;
+                    invincibilityTimer = DateTime.Now;
                     break;
             }
+        }
+
+        public void Death()
+        {
+            playerAlive = false;
+            playerEnergy = 0;
+            playerSpeed = 0;
+            trail.Destroy();
         }
     }
 }

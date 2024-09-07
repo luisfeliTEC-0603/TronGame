@@ -15,3 +15,4 @@ C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\obj\Debug\net8.0-windows\Tron
 C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\obj\Debug\net8.0-windows\ref\TronGame.dll
 C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\obj\Debug\net8.0-windows\TronGame.Properties.Resources.resources
 C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\obj\Debug\net8.0-windows\TronGame.TronGame.resources
+C:\Users\Hewlett Packard\Desktop\TronGame\TronGame\obj\Debug\net8.0-windows\TronGame.sourcelink.json

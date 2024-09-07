@@ -5,13 +5,11 @@ namespace TronGame.Data_Structures
     {
         private SimpleLinkedList<PriorityElement<T>> items;
 
-        // Constructor
         public PriorityStack()
         {
             items = new SimpleLinkedList<PriorityElement<T>>();
         }
 
-        // Push an item onto the stack with a specified priority
         public void Push(T item, int priority)
         {
             var newElement = new PriorityElement<T>(item, priority);
@@ -24,7 +22,6 @@ namespace TronGame.Data_Structures
                 Node<PriorityElement<T>> current = items.GetFirst();
                 Node<PriorityElement<T>> previous = null;
 
-                // Traverse the list to find the appropriate place to insert the new element
                 while (current != null && current.Data.Priority >= priority)
                 {
                     previous = current;
@@ -33,17 +30,14 @@ namespace TronGame.Data_Structures
 
                 if (previous == null)
                 {
-                    // Insert at the beginning
                     items.InsertFirst(newElement);
                 }
                 else if (current == null)
                 {
-                    // Insert at the end
                     items.InsertLast(newElement);
                 }
                 else
                 {
-                    // Insert in the middle
                     Node<PriorityElement<T>> newNode = new Node<PriorityElement<T>>(newElement);
                     newNode.Next = current;
                     previous.Next = newNode;
@@ -51,7 +45,6 @@ namespace TronGame.Data_Structures
             }
         }
 
-        // Pop the top item from the stack
         public T Pop()
         {
             if (items.IsEmpty())
@@ -60,7 +53,6 @@ namespace TronGame.Data_Structures
             return items.RemoveFirst().Data.Data;
         }
 
-        // Peek at the top item without removing it
         public T Peek()
         {
             if (items.IsEmpty())
@@ -69,19 +61,16 @@ namespace TronGame.Data_Structures
             return items.GetFirst().Data.Data;
         }
 
-        // Check if the stack is empty
         public bool IsEmpty()
         {
             return items.IsEmpty();
         }
 
-        // Get the number of items in the stack
         public int Count()
         {
             return items.Length();
         }
 
-        // Clear the stack
         public void Clear()
         {
             while (!items.IsEmpty())
@@ -90,14 +79,9 @@ namespace TronGame.Data_Structures
             }
         }
 
-        // Set the element with a specific priority as the new head
         public void SetElementAsHead(int index)
         {
-            if (index < 0 || index >= items.Length())
-                throw new IndexOutOfRangeException("Index out of range.");
-
-            if (index == 0)
-                return; // Already the head, nothing to do
+            if (index <= 0 || index >= items.Length()) return;
 
             Node<PriorityElement<T>> previousNode = null;
             Node<PriorityElement<T>> currentNode = items.GetFirst();
@@ -118,10 +102,8 @@ namespace TronGame.Data_Structures
 
             if (newHeadNode != null && previousNode != null)
             {
-                // Detach the node from its current position
                 previousNode.Next = newHeadNode.Next;
 
-                // Insert the node as the new head
                 newHeadNode.Next = items.GetFirst();
                 items.InsertFirst(newHeadNode.Data);
             }
