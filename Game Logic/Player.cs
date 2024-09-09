@@ -42,10 +42,12 @@ namespace TronGame.Game_Logic
         public DateTime invincibilityTimer {get; set;}
         public DateTime useItemTimer { get; set; }
         public DateTime hyperSpeedTimer { get; set; }
+        public bool isNPC { get; set; }
 
-        public Player(int initialCoordX, int initialCoordY, int initialSize, Direction initialDirection) 
+        public Player(bool npc, int initialCoordX, int initialCoordY, int initialSize, Direction initialDirection) 
         {
             playerAlive = true;
+            isNPC = npc;
             playerInvincible = false;
 
             playerEnergy = 500; 
@@ -131,7 +133,7 @@ namespace TronGame.Game_Logic
             switch (item)
             {
                 case InGameObj.Energy:
-                    if (playerEnergy < 100) playerEnergy += randomValue.Next(1, 500 - playerEnergy);
+                    if (playerEnergy < 500) playerEnergy += randomValue.Next(1, 500 - playerEnergy);
                     break;
 
                 case InGameObj.HyperVelocity:

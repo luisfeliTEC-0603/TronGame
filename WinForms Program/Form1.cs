@@ -28,7 +28,7 @@ namespace TronGame
         public int imageSize = 32;
         private Random randomValue;
         public TheGrid gameGrid;
-        Player player;
+        Player player, bot1, bot2, bot3;
         Graphics gpx;
         DateTime inGameTimer;
         Player[] playersList;
@@ -39,10 +39,17 @@ namespace TronGame
             randomValue = new Random();
             gameGrid = new TheGrid(32, 19);
 
-            player = new Player(10, 11, 5, Player.Direction.Up);
+            player = new Player(false, 15, 15, 4, Player.Direction.Up);
 
-            playersList = new Player[1];
+            bot1 = new Player(true, randomValue.Next(4, 28), randomValue.Next(4, 15), 4, Player.Direction.Right);
+            //bot2 = new Player(true, randomValue.Next(4, 28), randomValue.Next(4, 15), 4, Player.Direction.Left);
+            //bot3 = new Player(true, randomValue.Next(4, 28), randomValue.Next(4, 15), 4, Player.Direction.Down);
+
+            playersList = new Player[2];
             playersList[0] = player;
+            playersList[1] = bot1;
+            //playersList[2] = bot2;
+            //playersList[3] = bot3;
 
             energyBar.Value = player.playerEnergy;
             speedInfo.Text = $"Speed : MARC {player.playerSpeed}";
@@ -58,7 +65,7 @@ namespace TronGame
 
             foreach (Player player in playersList) DrawPlayerInGrid(player, gameGrid);
 
-            for (int i = 0; i < 9; i++) AddGameItem(gameGrid);
+            for (int i = 0; i < 1; i++) AddGameItem(gameGrid);
 
             RenderGrid();
         }
@@ -122,7 +129,13 @@ namespace TronGame
         private void GameLoop(object sender, EventArgs e)
         {
 
-            foreach (Player player in playersList) MovePlayer(player, gameGrid);
+            foreach (Player player in playersList)
+            {
+                if (!player.isNPC) MovePlayer(player, gameGrid);
+                else MoveNPC(player, playersList[0], gameGrid);
+            }
+
+            if (!player.playerAlive) return; 
 
             if (DateTime.Now - inGameTimer >= TimeSpan.FromSeconds(3))
             {
@@ -133,7 +146,7 @@ namespace TronGame
             RenderGrid();
         }
 
-        public void MovePlayer(Player player, TheGrid gameGrid)
+        private void MovePlayer(Player player, TheGrid gameGrid)
         {
             if (!player.playerAlive)
             {
@@ -181,6 +194,83 @@ namespace TronGame
 
                 if (player.playerAlive) DrawPlayerInGrid(player, gameGrid);
                 else DestroyPlayer(player, gameGrid);
+            }
+        }
+
+        private void MoveNPC(Player npc, Player target, TheGrid gameGrid)
+        {
+            if (!npc.playerAlive)
+            {
+                DestroyPlayer(npc, gameGrid);
+                return;
+            }
+
+            for (int s = 0; s < npc.playerSpeed; s++)
+            {
+                if (!npc.itemsCollected.IsEmpty() && DateTime.Now - npc.useItemTimer >= TimeSpan.FromSeconds(3.5))
+                {
+                    npc.HandleItem(npc.itemsCollected.Pop());
+                }
+                if (DateTime.Now - npc.hyperSpeedTimer >= TimeSpan.FromSeconds(3.5))
+                {
+                    npc.playerSpeed = 1;
+                }
+
+                int deltaX = target.playerPosition.posX - npc.playerPosition.posX;
+                int deltaY = target.playerPosition.posY - npc.playerPosition.posY;
+
+                Player.PlayerCoords newPosition = npc.playerPosition;
+
+                if (Math.Abs(deltaX) > Math.Abs(deltaY))
+                {
+                    if (deltaX > 0)
+                    {
+                        npc.ChangeDirection(Player.Direction.Right);
+                        newPosition.posX += 1;
+                    }
+                    else
+                    {
+                        npc.ChangeDirection(Player.Direction.Left);
+                        newPosition.posX -= 1;
+                    }
+                }
+                else
+                {
+                    if (deltaY > 0)
+                    {
+                        npc.ChangeDirection(Player.Direction.Down);
+                        newPosition.posY += 1;
+                    }
+                    else
+                    {
+                        npc.ChangeDirection(Player.Direction.Up);
+                        newPosition.posY -= 1;
+                    }
+                }
+
+                if (newPosition.posX < 0 || newPosition.posY < 0 || newPosition.posX >= gameGrid.rows || newPosition.posY >= gameGrid.columns)
+                {
+                    DestroyPlayer(npc, gameGrid);
+                    return;
+                }
+
+                Player.PlayerCoords lastTrailCoords = npc.InsertNewHead(newPosition, true);
+
+                if (!npc.playerInvincible) npc.playerEnergy--;
+                if (npc.playerEnergy <= 0) npc.playerAlive = false;
+
+                InGameObj itemInNewPosition = gameGrid.CheckItem(npc.playerPosition.posX, npc.playerPosition.posY);
+                HandleCollision(npc, gameGrid, itemInNewPosition);
+
+                while (npc.trail.Length() >= npc.playerSize)
+                {
+                    npc.trail.RemoveLast();
+                }
+
+                gameGrid.ModifyGrid(lastTrailCoords.posX, lastTrailCoords.posY, InGameObj.Void);
+
+                if (npc.playerAlive) DrawPlayerInGrid(npc, gameGrid);
+                else DestroyPlayer(npc, gameGrid);
             }
         }
 
@@ -232,11 +322,11 @@ namespace TronGame
 
             while (currentNode != null)
             {
-                gameGrid.ModifyGrid(currentNode.Data.posX, currentNode.Data.posY, player.playerInvincible ? InGameObj.InvincibleJetWall : InGameObj.PlayerJetWall);
+                gameGrid.ModifyGrid(currentNode.Data.posX, currentNode.Data.posY, player.playerInvincible ? InGameObj.InvincibleJetWall : player.isNPC ? InGameObj.BotJetWall : InGameObj.PlayerJetWall);
                 currentNode = currentNode.Next;
             }
 
-            gameGrid.ModifyGrid(player.trail.GetFirst().Data.posX, player.trail.GetFirst().Data.posY, player.playerInvincible ? InGameObj.Invincible : InGameObj.Player);
+            gameGrid.ModifyGrid(player.trail.GetFirst().Data.posX, player.trail.GetFirst().Data.posY, player.playerInvincible ? InGameObj.Invincible : player.isNPC ? InGameObj.Bot : InGameObj.Player);
         }
 
         private void AddGameItem(TheGrid gameBoard, InGameObj? specificItem = null)
@@ -293,7 +383,7 @@ namespace TronGame
                 if (player.playerAlive)
                 {
 
-                    Image playerHeadImage = GameGPX.Images[player.playerInvincible ? (int)InGameObj.Invincible : (int)InGameObj.Player];
+                    Image playerHeadImage = GameGPX.Images[player.playerInvincible ? (int)InGameObj.Invincible : player.isNPC ? (int)InGameObj.Bot : (int)InGameObj.Player];
                     int rotationAngle = 0;
 
                     switch (player.playerDirection)

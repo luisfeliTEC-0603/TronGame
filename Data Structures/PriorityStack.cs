@@ -66,11 +66,6 @@ namespace TronGame.Data_Structures
             return items.IsEmpty();
         }
 
-        public int Count()
-        {
-            return items.Length();
-        }
-
         public void Clear()
         {
             while (!items.IsEmpty())
