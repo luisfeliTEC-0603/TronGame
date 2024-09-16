@@ -1,116 +1,127 @@
-﻿ 
-namespace TronGame.Data_Structures
-{ 
+﻿namespace TronGame.Data_Structures
+{
     public class SimpleLinkedList<T>
     {
-        private Node<T> _head;
-        private Node<T> _tail;
-        private int _count;
+        private Node<T> head;
+        private Node<T> tail;
+        private int count;
 
-        public SimpleLinkedList()
+        public SimpleLinkedList() // Constructor. 
         {
-            _head = null;
-            _tail = null;
-            _count = 0;
+            head = null;
+            tail = null;
+            count = 0;
         }
 
+        // Insert at the beginning.
         public void InsertFirst(T data)
         {
-            Node<T> newNode = new Node<T>(data);
-            if (_head == null)
+            Node<T> newNode = new Node<T>(data); // Create a new node with the provided data.
+
+            if (IsEmpty()) // Check if the list is empty.
             {
-                _head = newNode;
-                _tail = newNode;
+                head = newNode;
+                tail = newNode;
             }
             else
             {
-                newNode.Next = _head;
-                _head = newNode;
+                // Add the element as new head. 
+                newNode.Next = head;
+                head = newNode;
             }
-            _count++;
+            count++;
         }
 
-        public void InsertLast(T data)
+        // Insert at the end.
+        public void InsertLast(T data) 
         {
-            Node<T> newNode = new Node<T>(data);
-            if (_tail == null)
+            Node<T> newNode = new Node<T>(data); // Create a new node with the provided data.
+
+            if (IsEmpty()) // Check if the list is empty. 
             {
-                _head = newNode;
-                _tail = newNode;
+                head = newNode;
+                tail = newNode;
             }
             else
             {
-                _tail.Next = newNode;
-                _tail = newNode;
+                // Add the element as new tail.
+                tail.Next = newNode;
+                tail = newNode;
             }
-            _count++;
+            count++;
         }
 
+        // Remove and return the first node.
         public Node<T> RemoveFirst()
         {
-            if (_head == null) return null;
+            if (IsEmpty()) return null; // Check if the list is empty. 
 
-            Node<T> removedNode = _head;
-            _head = _head.Next;
+            Node<T> removedNode = head;
+            head = head.Next; // Update the head. 
 
-            if (_head == null)
-            {
-                _tail = null;
-            }
+            if (head == null) tail = null; // Both head and tail are null, if the list is now empty.
+            count--;
 
-            _count--;
             return removedNode;
         }
 
+        // Remove and return the last node.
         public Node<T> RemoveLast()
         {
-            if (_tail == null) return null;
+            if (IsEmpty()) return null; // Check if the list is empty. 
 
-            if (_head == _tail)
+            if (head == tail) // Only one node in the list. 
             {
-                Node<T> removedNode = _tail;
-                _head = null;
-                _tail = null;
-                _count--;
-                return removedNode;
+                // List becomes empty and return removed node. 
+                Node<T> nodeToRemove = tail; 
+                head = null;
+                tail = null;
+                count--;
+                return nodeToRemove;
             }
 
-            Node<T> current = _head;
-            while (current.Next != _tail)
+            Node<T> current = head;
+            while (current.Next != tail) // Traverse to the node before the tail. 
             {
                 current = current.Next;
             }
 
-            Node<T> removedNodeLast = _tail;
-            _tail = current;
-            _tail.Next = null;
+            // Updates tail and remove previous tail. 
+            Node<T> nodeToRemoveLast = tail;
+            tail = current;
+            tail.Next = null;
 
-            _count--;
-            return removedNodeLast;
+            count--;
+            return nodeToRemoveLast;
         }
 
-        public Node<T> GetFirst() => _head;
+        // Get the first node
+        public Node<T> GetFirst() => head;
 
-        public Node<T> GetLast() => _tail;
+        // Get the last node
+        public Node<T> GetLast() => tail;
 
-        public int Length() => _count;
+        // Get the number of nodes
+        public int Length() => count;
 
-        public bool IsEmpty() => _count == 0;
+        // Check if the list is empty
+        public bool IsEmpty() => count == 0 || head == null;
 
+        // Clear the list
         public void Destroy()
         {
-            _head = null;
-            _tail = null;
-            _count = 0;
+            head = null;
+            tail = null;
+            count = 0;
         }
     }
 
     public class Node<T>
     {
-        public T Data { get; set; }
-        public Node<T> Next { get; set; }
+        public T Data { get; set; } // Data stored. 
+        public Node<T> Next { get; set; } // Reference to the next node. 
 
-        public Node(T data)
+        public Node(T data) // Constructor. 
         {
             Data = data;
             Next = null;

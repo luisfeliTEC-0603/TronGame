@@ -56,7 +56,7 @@ namespace TronGame
             // GameTimer
             // 
             GameTimer.Enabled = true;
-            GameTimer.Interval = 200;
+            GameTimer.Interval = 175;
             GameTimer.Tick += GameLoop;
             // 
             // GameGPX
