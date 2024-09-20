@@ -19,12 +19,12 @@ namespace TronGame
             randomValue = new Random();
             gameGrid = new TheGrid(32, 19); // Initialize grid with dimensions 32x19. 
 
-            player = new Player(false, 15, 15, 4, Player.Direction.Up); // Initialize main . 
+            player = new Player(false, 29, 9, 4, Player.Direction.Left); // Initialize main . 
 
-            // Initialize Bots in Random Positions. 
-            bot1 = new Player(true, randomValue.Next(4, 28), randomValue.Next(4, 15), 4, Player.Direction.Right);
-            bot2 = new Player(true, randomValue.Next(4, 28), randomValue.Next(4, 15), 4, Player.Direction.Left);
-            bot3 = new Player(true, randomValue.Next(4, 28), randomValue.Next(4, 15), 4, Player.Direction.Down);
+            // Initialize Bots.  
+            bot1 = new Player(true, 8, 4, 4, Player.Direction.Down);
+            bot2 = new Player(true, 4, 9, 4, Player.Direction.Right);
+            bot3 = new Player(true, 8, 14, 4, Player.Direction.Up);
 
             // Initialize Players Array. 
             playersList = new Player[4];
@@ -352,6 +352,8 @@ namespace TronGame
 
                                 if (player == playersList[0] || otherPlayer == playersList[0])
                                 {
+                                    player.playerAlive = false;
+                                    DestroyPlayer(player, gameGrid);
                                     energyBar.Value = player.playerEnergy;
                                     speedInfo.Text = $"Speed | MARC 0{player.playerSpeed}";
                                 }
@@ -360,8 +362,11 @@ namespace TronGame
 
                         player.playerAlive = false;
                         DestroyPlayer(player, gameGrid);
-                        energyBar.Value = player.playerEnergy;
-                        speedInfo.Text = $"Speed | MARC 0{player.playerSpeed}";
+                        if (player == playersList[0])
+                        {
+                            energyBar.Value = player.playerEnergy;
+                            speedInfo.Text = $"Speed | MARC 0{player.playerSpeed}";
+                        }
                         return;
                     }
 
